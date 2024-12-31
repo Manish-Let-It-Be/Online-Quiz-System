@@ -1,0 +1,30 @@
+-----PROJECT STRUCTURE-----
+1> Authentication for the User
+    ● 1> New User
+    ● 2> Existing User
+
+    ● Take all the data and store it in the Database Table Like Name, EMial, Phone, Password, Address, City, Pin Code
+    ● Validate the User with the stored Email and Paswword from Database Table
+
+2> Move to program features >>>>>>
+NOTE : 
+> Program should be Dynamic, Every Functionality must include "Search" functions ( With Name or ID )
+> Display the data in Tabular Format in the console
+> We can navigate through Parent and Child menus
+
+
+config :
+> Connetion 
+
+models :
+> Entities ( Class ) : User, Quiz, Result 
+
+helper :
+> Validtions files
+
+main :
+> main function 
+> make a class named main ( Driver code )
+
+services :
+> define all features and functionalities
