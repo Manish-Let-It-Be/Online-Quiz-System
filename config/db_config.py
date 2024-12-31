@@ -5,9 +5,9 @@ class ConnectionToDB:
     def create_connection(self):  # create connection to database
         connection = mysql.connector.connect(
             host="localhost", 
-            user="XXXX", 
-            password="XXXX", 
-            database="XXXXXXX"
+            user="root", 
+            password="manish", 
+            database="demo_user"
         )
         if connection.is_connected():
             cursor=connection.cursor()
