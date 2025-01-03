@@ -1,58 +1,99 @@
-# import mysql.connector
-
-# class ConnectToDb:
-#      def create_connection(self):
-#          connection = mysql.connector.connect(
-#              user="root",
-#              password="manish",
-#              host="localhost",
-#              database="quizdb"
-#          )
-#          if connection.is_connected():
-#              cursor=connection.cursor()
-#              print("Connection Established :)")
-#              return cursor
-#          else:
-#              print("Something Wrong")
-
-# # # Example usage
-# # db = ConnectToDb()
-# # connection = db.create_connection()
-
-
-
-
 import mysql.connector
 from mysql.connector import Error
+from tabulate import tabulate
 
-class ConnectToDb:
-    def __init__(self):
-        self.connection = None
-
-    def create_connection(self):
+class DatabaseConfig:
+    @staticmethod
+    def get_connection():
         try:
-            self.connection = mysql.connector.connect(
-                user="root",
-                password="manish",
-                host="localhost",
-                database="quizdb"
+            connection = mysql.connector.connect(
+                host='localhost',
+                database='quizdb',
+                user='root',
+                password='manish'
             )
-            if self.connection.is_connected():
-                cursor = self.connection.cursor()
-                print("Connection Established :)")
-                return cursor
+            return connection
         except Error as e:
-            print(f"Error: {e}")
+            print(f"Error connecting to MySQL Database: {e}")
             return None
 
-    def close_connection(self):
-        if self.connection.is_connected():
-            self.connection.close()
-            print("Connection Closed.")
+    @staticmethod
+    def init_database():
+        connection = DatabaseConfig.get_connection()
+        if connection:
+            try:
+                cursor = connection.cursor()
+                
+                # Create users table
+                cursor.execute("""
+                    CREATE TABLE IF NOT EXISTS users (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        username VARCHAR(50) UNIQUE NOT NULL,
+                        password VARCHAR(255) NOT NULL,
+                        role ENUM('admin', 'candidate') NOT NULL
+                    )
+                """)
 
-# # Example usage (optional)
-# if __name__ == "__main__":
-#     db = ConnectToDb()
-#     cursor = db.create_connection()
-#     # Perform database operations...
-#     db.close_connection()
+                # Create categories table
+                cursor.execute("""
+                    CREATE TABLE IF NOT EXISTS quiz_categories (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        name VARCHAR(100) NOT NULL,
+                        description TEXT
+                    )
+                """)
+
+                # Create quizzes table
+                cursor.execute("""
+                    CREATE TABLE IF NOT EXISTS quizzes (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        category_id INT,
+                        title VARCHAR(200) NOT NULL,
+                        description TEXT,
+                        time_limit INT,
+                        FOREIGN KEY (category_id) REFERENCES quiz_categories(id)
+                    )
+                """)
+
+                # Create questions table
+                cursor.execute("""
+                    CREATE TABLE IF NOT EXISTS questions (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        quiz_id INT,
+                        question_text TEXT NOT NULL,
+                        option_a TEXT NOT NULL,
+                        option_b TEXT NOT NULL,
+                        option_c TEXT NOT NULL,
+                        option_d TEXT NOT NULL,
+                        correct_answer CHAR(1) NOT NULL,
+                        FOREIGN KEY (quiz_id) REFERENCES quizzes(id)
+                    )
+                """)
+
+                # Create quiz_results table
+                cursor.execute("""
+                    CREATE TABLE IF NOT EXISTS quiz_results (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        user_id INT,
+                        quiz_id INT,
+                        score INT,
+                        time_taken INT,
+                        date_taken DATETIME DEFAULT CURRENT_TIMESTAMP,
+                        FOREIGN KEY (user_id) REFERENCES users(id),
+                        FOREIGN KEY (quiz_id) REFERENCES quizzes(id)
+                    )
+                """)
+
+                # Insert default admin user
+                cursor.execute("""
+                    INSERT IGNORE INTO users (username, password, role)
+                    VALUES ('manish', '9234', 'admin')
+                """)
+
+                connection.commit()
+                print("Database initialized successfully!")
+            except Error as e:
+                print(f"Error initializing database: {e}")
+            finally:
+                cursor.close()
+                connection.close()

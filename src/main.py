@@ -1,14 +1,19 @@
-# def print_hi(name):
-#     # Use a breakpoint in the code line below to debug your script.
-#     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+import sys
+import os
 
+# Add the parent directory to the system path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# # Press the green button in the gutter to run the script.
-# if __name__ == '__main__':
-#     print_hi('PyCharm')
+from main.app import QuizApp
+from config.db_config import DatabaseConfig
 
-from config.db_config import ConnectToDb
+def main():
+    # Initialize database
+    DatabaseConfig.init_database()
+    
+    # Start the application
+    app = QuizApp()
+    app.start()
 
 if __name__ == "__main__":
-    db_object=ConnectToDb()
-    db_object.create_connection()
+    main()
