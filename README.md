@@ -18,4 +18,13 @@
 ## Database Tables:  
 - users: Store user details.  
 - questions: Store quiz questions and answers.  
-- results: Record user scores and quiz details.  
+- results: Record user scores and quiz details.
+
+
+<!--
+
+[View on Eraser![](https://app.eraser.io/workspace/pHxhnZoGxiOtSZp0ke2k/preview?elements=CPituBc6SslSNolUcePKLA&type=embed)](https://app.eraser.io/workspace/pHxhnZoGxiOtSZp0ke2k?elements=CPituBc6SslSNolUcePKLA)
+-->
+
+<a href="https://github.com/Manish-Let-It-Be"><img src="https://app.eraser.io/workspace/pHxhnZoGxiOtSZp0ke2k/preview?elements=CPituBc6SslSNolUcePKLA&type=embed" height='600'/>
+</a>
