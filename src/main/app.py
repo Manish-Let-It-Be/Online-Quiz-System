@@ -16,7 +16,6 @@ class QuizApp:
             "Admin Login",
             "Candidate Login",
             "Candidate Registration",
-            "Reset Database (!)",  # New option
             "Exit"
         ]
 
@@ -31,8 +30,6 @@ class QuizApp:
                 self.candidate_login()
             elif choice == 3:
                 self.candidate_registration()
-            elif choice == 4:
-                self.reset_database()  # New method
             else:
                 print("\nThank you for using the Quiz Management System!")
                 break
@@ -79,6 +76,7 @@ class QuizApp:
                 "Manage Quizzes",
                 "Manage Questions",
                 "View Candidates",
+                "Reset Database ( ! )",
                 "Logout"
             ])
 
@@ -90,6 +88,8 @@ class QuizApp:
                 self.manage_questions()
             elif choice == 4:
                 self.view_candidates()
+            elif choice == 5:
+                self.reset_database()
             else:
                 self.current_user = None
                 break
@@ -351,20 +351,13 @@ class QuizApp:
         while True:
             ConsoleHelper.print_header(f"Candidate Dashboard - Welcome {self.current_user.username}")
             choice = ConsoleHelper.get_menu_choice([
-                "View Categories",
-                "View Quizzes",
                 "Take Quiz",
                 "View Scoreboard",
                 "Logout"
             ])
-
             if choice == 1:
-                self.view_categories()
-            elif choice == 2:
-                self.view_quizzes()
-            elif choice == 3:
                 self.take_quiz()
-            elif choice == 4:
+            elif choice == 2:
                 self.view_scoreboard()
             else:
                 self.current_user = None
