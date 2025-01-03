@@ -4,7 +4,7 @@
 
 ## Features:  
 *Admin Panel*:  
-  - Add, update, and delete quiz questions.  
+  - Add, update, and delete quizes and  questions.  
   - Create categories for quizzes.
 
 *Quiz Management*:  
