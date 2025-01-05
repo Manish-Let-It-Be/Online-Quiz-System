@@ -1,9 +1,8 @@
 import sys
 import os
 
-# Add the parent directory to the system path
+# Added parent directory to the system path as during importing errors faced
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 
 
 from typing import List, Optional
@@ -11,6 +10,8 @@ from mysql.connector import Error
 from config.db_config import DatabaseConfig
 from models import User, Category, Quiz, Question, QuizResult
 
+
+# User Services 
 class UserService:
     @staticmethod
     def authenticate(username: str, password: str, role: str) -> Optional[User]:
@@ -63,6 +64,8 @@ class UserService:
                 connection.close()
         return []
 
+
+# Category Services
 class CategoryService:
     @staticmethod
     def create(name: str, description: str) -> bool:
@@ -94,6 +97,8 @@ class CategoryService:
                 connection.close()
         return []
 
+
+# Quiz Services
 class QuizService:
     @staticmethod
     def create(quiz: Quiz) -> bool:
@@ -125,7 +130,23 @@ class QuizService:
                 cursor.close()
                 connection.close()
         return []
+    
+    @staticmethod
+    def get_quiz_time_limit(quiz_id: int) -> int:
+        connection = DatabaseConfig.get_connection()
+        if connection:
+            try:
+                cursor = connection.cursor(dictionary=True)
+                cursor.execute("SELECT time_limit FROM quizzes WHERE id = %s", (quiz_id, ))
+                result = cursor.fetchone()
+                return result['time_limit'] if result else 0
+            finally:
+                cursor.close()
+                connection.close()
+        return 0
 
+
+# Question Services
 class QuestionService:
     @staticmethod
     def add_question(question: Question) -> bool:
@@ -161,6 +182,8 @@ class QuestionService:
                 connection.close()
         return []
 
+
+# Result Services
 class QuizResultService:
     @staticmethod
     def save_result(result: QuizResult) -> bool:

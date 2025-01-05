@@ -1,7 +1,7 @@
 import sys
 import os
 
-# Add the parent directory to the system path
+# Added parent directory to the system path as during importing errors faced
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
@@ -9,6 +9,7 @@ from helper.__init__ import ConsoleHelper
 from services.__init__ import UserService, CategoryService, QuizService, QuestionService, QuizResultService
 from models.__init__ import User, Category, Quiz, Question, QuizResult
 from services.database_service import DatabaseService
+import time
 
 class QuizApp:
     def __init__(self):
@@ -31,18 +32,16 @@ class QuizApp:
             elif choice == 3:
                 self.candidate_registration()
             else:
-                print("\nThank you for using the Quiz Management System!")
+                print("\nThank you for taking the Quiz !")
                 break
 
 
     def reset_database(self):
-        """Reset the entire database after confirmation."""
         ConsoleHelper.print_header("Reset Database")
         print("WARNING: This will delete ALL data from the database!")
-        print("This includes all users, categories, quizzes, questions, and results.")
         print("This action cannot be undone!")
         
-        if ConsoleHelper.confirm_action("\nAre you absolutely sure you want to reset the database? (y/n): "):
+        if ConsoleHelper.confirm_action("\nAre you sure you want to reset the database? (y/n): "):
             if DatabaseService.reset_database():
                 print("\nDatabase reset successfully!")
             else:
@@ -56,7 +55,6 @@ class QuizApp:
 
     def admin_login(self):
         ConsoleHelper.print_header("Admin Login")
-        # print("Default admin credentials - Username: admin, Password: admin123")
         username = ConsoleHelper.get_input("Username: ")
         password = ConsoleHelper.get_input("Password: ")
         
@@ -122,7 +120,6 @@ class QuizApp:
         if not categories:
             print("No categories found.")
         else:
-            # Convert categories to table format
             headers = ['ID', 'Name', 'Description']
             data = [[cat.id, cat.name, cat.description] for cat in categories]
             ConsoleHelper.display_table(headers, data, "Available Categories")
@@ -177,7 +174,6 @@ class QuizApp:
             ConsoleHelper.pause()
             return
 
-        # Display categories in table format
         headers = ['ID', 'Name']
         data = [[cat.id, cat.name] for cat in categories]
         ConsoleHelper.display_table(headers, data, "Select a category to view quizzes:")
@@ -189,7 +185,6 @@ class QuizApp:
             if not quizzes:
                 print("No quizzes found in this category.")
             else:
-                # Display quizzes in table format
                 headers = ['ID', 'Title', 'Description', 'Time Limit']
                 data = [[q.id, q.title, q.description, f"{q.time_limit} minutes"] for q in quizzes]
                 ConsoleHelper.display_table(headers, data, "Available Quizzes")
@@ -214,7 +209,6 @@ class QuizApp:
                 break
 
     def add_question(self):
-        # First select a quiz
         categories = CategoryService.get_all()
         if not categories:
             print("No categories available.")
@@ -269,7 +263,6 @@ class QuizApp:
             ConsoleHelper.pause()
             return
 
-        # Display categories in table format
         headers = ['ID', 'Name']
         data = [[cat.id, cat.name] for cat in categories]
         ConsoleHelper.display_table(headers, data, "Select a category:")
@@ -283,7 +276,6 @@ class QuizApp:
                 ConsoleHelper.pause()
                 return
 
-            # Display quizzes in table format
             headers = ['ID', 'Title']
             data = [[q.id, q.title] for q in quizzes]
             ConsoleHelper.display_table(headers, data, "Select a quiz:")
@@ -317,7 +309,6 @@ class QuizApp:
         if not candidates:
             print("No candidates found.")
         else:
-            # Display candidates in table format
             headers = ['Username', 'Role']
             data = [[c.username, c.role] for c in candidates]
             ConsoleHelper.display_table(headers, data, "Registered Candidates")
@@ -364,7 +355,6 @@ class QuizApp:
                 break
 
     def take_quiz(self):
-        # First select a quiz
         categories = CategoryService.get_all()
         if not categories:
             print("No categories available.")
@@ -399,7 +389,23 @@ class QuizApp:
             score = 0
             total_questions = len(questions)
 
+            time_limit = QuizService.get_quiz_time_limit(quiz_id) * 60  # Convert minutes to seconds
+            if time_limit <= 0:
+                print("Invalid time limit. Contact admin to solve issue.")
+                ConsoleHelper.pause()
+                return
+            
+            start_time=time.time()
+            
+
             for i, question in enumerate(questions, 1):
+                current_time=time.time()
+                elapsed_time=current_time-start_time
+
+                if elapsed_time > time_limit:
+                    print("Time's up! The quiz is saved automatically.")
+                    break
+
                 ConsoleHelper.print_header(f"Question {i}/{total_questions}")
                 print(f"\n{question.question_text}")
                 print(f"A) {question.option_a}")
@@ -411,13 +417,17 @@ class QuizApp:
                 if answer == question.correct_answer:
                     score += 1
 
-            # Calculate percentage
+            end_time=time.time()
+            time_taken=end_time-start_time
+
+            # Percentage score & Time Taken
             percentage = (score / total_questions) * 100
             print(f"\nQuiz completed!")
             print(f"Your score: {score}/{total_questions} ({percentage:.2f}%)")
+            print(f"Time taken: {time_taken:.2f} seconds")
 
-            # Save result
-            result = QuizResult(None, self.current_user.id, quiz_id, score, 0, None)
+            # Saving result
+            result = QuizResult(None, self.current_user.id, quiz_id, score, time_taken, None)
             if QuizResultService.save_result(result):
                 print("Result saved successfully!")
             else:
@@ -434,7 +444,6 @@ class QuizApp:
             ConsoleHelper.pause()
             return
 
-        # Display categories in table format
         headers = ['ID', 'Name']
         data = [[cat.id, cat.name] for cat in categories]
         ConsoleHelper.display_table(headers, data, "Select a category:")
@@ -448,7 +457,6 @@ class QuizApp:
                 ConsoleHelper.pause()
                 return
 
-            # Display quizzes in table format
             headers = ['ID', 'Title']
             data = [[q.id, q.title] for q in quizzes]
             ConsoleHelper.display_table(headers, data, "Select a quiz:")
@@ -459,7 +467,6 @@ class QuizApp:
             if not results:
                 print("No results found for this quiz.")
             else:
-                # Display scoreboard in table format
                 headers = ['Username', 'Score', 'Time Taken', 'Date']
                 data = [[r['username'], r['score'], f"{r['time_taken']}s", r['date_taken']] 
                    for r in results]

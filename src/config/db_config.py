@@ -24,7 +24,6 @@ class DatabaseConfig:
             try:
                 cursor = connection.cursor()
                 
-                # Create users table
                 cursor.execute("""
                     CREATE TABLE IF NOT EXISTS users (
                         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -34,7 +33,6 @@ class DatabaseConfig:
                     )
                 """)
 
-                # Create categories table
                 cursor.execute("""
                     CREATE TABLE IF NOT EXISTS quiz_categories (
                         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -43,7 +41,6 @@ class DatabaseConfig:
                     )
                 """)
 
-                # Create quizzes table
                 cursor.execute("""
                     CREATE TABLE IF NOT EXISTS quizzes (
                         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -55,7 +52,6 @@ class DatabaseConfig:
                     )
                 """)
 
-                # Create questions table
                 cursor.execute("""
                     CREATE TABLE IF NOT EXISTS questions (
                         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -70,7 +66,6 @@ class DatabaseConfig:
                     )
                 """)
 
-                # Create quiz_results table
                 cursor.execute("""
                     CREATE TABLE IF NOT EXISTS quiz_results (
                         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -84,7 +79,7 @@ class DatabaseConfig:
                     )
                 """)
 
-                # Insert default admin user
+                # Admin credential
                 cursor.execute("""
                     INSERT IGNORE INTO users (username, password, role)
                     VALUES ('manish', '9234', 'admin')

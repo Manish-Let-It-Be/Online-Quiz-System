@@ -20,7 +20,6 @@ class ConsoleHelper:
     def get_menu_choice(options: List[str]) -> int:
         while True:
             print("\nPlease select an option:")
-            # Use tabulate for menu options
             menu_items = [[i, option] for i, option in enumerate(options, 1)]
             print(tabulate(menu_items, headers=['CHOICE', 'OPTION'], tablefmt='grid'))
             try:
@@ -33,7 +32,6 @@ class ConsoleHelper:
 
     @staticmethod
     def display_table(headers: List[str], data: List[List], title: str = None):
-        """Display data in a formatted table"""
         if title:
             print(f"\n{title}")
         print(tabulate(data, headers=headers, tablefmt='grid'))
