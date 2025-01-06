@@ -376,7 +376,7 @@ class QuizApp:
 
             print("\nSelect a quiz:")
             for quiz in quizzes:
-                print(f"{quiz.id}: {quiz.title}")
+                print(f"{quiz.id}: {quiz.title}: Time Limit = {quiz.time_limit} min")
 
             quiz_id = int(ConsoleHelper.get_input("Enter Quiz ID: "))
             questions = QuestionService.get_quiz_questions(quiz_id)
