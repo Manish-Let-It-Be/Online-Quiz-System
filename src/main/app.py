@@ -353,6 +353,20 @@ class QuizApp:
             else:
                 self.current_user = None
                 break
+    
+    
+    def show_quiz_answers(self, questions):
+        ConsoleHelper.print_header("Quiz Answers")
+        for i, question in enumerate(questions, 1):
+            print(f"\nQuestion {i}:")
+            print(f"{question.question_text}")
+            print(f"A) {question.option_a}")
+            print(f"B) {question.option_b}")
+            print(f"C) {question.option_c}")
+            print(f"D) {question.option_d}")
+            print(f"Correct Answer: {question.correct_answer}")
+        ConsoleHelper.pause()
+
 
     def take_quiz(self):
         categories = CategoryService.get_all()
@@ -420,18 +434,30 @@ class QuizApp:
             end_time=time.time()
             time_taken=end_time-start_time
 
-            # Percentage score & Time Taken
-            percentage = (score / total_questions) * 100
-            print(f"\nQuiz completed!")
-            print(f"Your score: {score}/{total_questions} ({percentage:.2f}%)")
-            print(f"Time taken: {time_taken:.2f} seconds")
+            while True:
+                # Percentage score & Time Taken
+                percentage = (score / total_questions) * 100
+                ConsoleHelper.print_header("Quiz Completed")
+                print(f"Your score: {score}/{total_questions} ({percentage:.2f}%)")
+                print(f"Time taken: {time_taken:.2f} seconds")
 
-            # Saving result
-            result = QuizResult(None, self.current_user.id, quiz_id, score, time_taken, None)
-            if QuizResultService.save_result(result):
-                print("Result saved successfully!")
-            else:
-                print("Failed to save result.")
+                # Saving result
+                result = QuizResult(None, self.current_user.id, quiz_id, score, time_taken, None)
+                if QuizResultService.save_result(result):
+                    print("Result saved successfully!")  
+                else:
+                    print("Failed to save result.")
+
+                # Option to see answers or go back to main menu
+                choice = ConsoleHelper.get_menu_choice([
+                    "See Answers",
+                    "Go Back"
+                ])
+                
+                if choice == 1:
+                    self.show_quiz_answers(questions)
+                else:
+                    break
 
         except ValueError:
             print("Invalid input. Please enter valid numbers.")
