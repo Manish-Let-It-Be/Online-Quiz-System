@@ -79,7 +79,7 @@ class DatabaseConfig:
                     )
                 """)
 
-                # Admin credential
+                # My(Admin) credential
                 cursor.execute("""
                     INSERT IGNORE INTO users (username, password, role)
                     VALUES ('manish', '9234', 'admin')
