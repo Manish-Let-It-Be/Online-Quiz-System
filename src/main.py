@@ -8,10 +8,10 @@ from main.app import QuizApp
 from config.db_config import DatabaseConfig
 
 def main():
-    # Initializing database
+    
     DatabaseConfig.init_database()
     
-    # Starting application
+    
     app = QuizApp()
     app.start()
 

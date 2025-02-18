@@ -27,14 +27,12 @@ class DatabaseService:
             try:
                 cursor = connection.cursor()
 
-                # First check if tables exist
                 cursor.execute("SHOW TABLES")
                 existing_tables = [table[0] for table in cursor.fetchall()]
                 
                 # Temporarily disable foreign key checks
                 cursor.execute("SET FOREIGN_KEY_CHECKS = 0")
                 
-                # Only truncate tables that exist
                 for table in tables:
                     if table in existing_tables:
                         cursor.execute(f"TRUNCATE TABLE {table}")
