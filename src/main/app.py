@@ -1,5 +1,6 @@
 import sys
 import os
+import getpass
 
 # Added parent directory to the system path as during importing errors faced
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -56,8 +57,7 @@ class QuizApp:
     def admin_login(self):
         ConsoleHelper.print_header("Admin Login")
         username = ConsoleHelper.get_input("Username: ")
-        password = ConsoleHelper.get_input("Password: ")
-        
+        password = getpass.getpass("Password: ")
         user = UserService.authenticate(username, password, 'admin')
         if user:
             self.current_user = user
@@ -317,7 +317,7 @@ class QuizApp:
     def candidate_registration(self):
         ConsoleHelper.print_header("Candidate Registration")
         username = ConsoleHelper.get_input("Choose username: ")
-        password = ConsoleHelper.get_input("Choose password: ")
+        password = getpass.getpass("Password: ")
         
         if UserService.register(username, password, 'candidate'):
             print("Registration successful!")
@@ -328,7 +328,8 @@ class QuizApp:
     def candidate_login(self):
         ConsoleHelper.print_header("Candidate Login")
         username = ConsoleHelper.get_input("Username: ")
-        password = ConsoleHelper.get_input("Password: ")
+        password = getpass.getpass("Password: ")
+
         
         user = UserService.authenticate(username, password, 'candidate')
         if user:
