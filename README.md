@@ -1,6 +1,6 @@
 # Quiz On CLI
+- Mentor : [Mr. Jeet Kumar](https://github.com/jeetjha11)
 
-## Overview
 Quiz On CLI is a command-line interface application that allows users to take quizzes, manage categories, quizzes, and questions, and view their scores. This project is designed for both administrators and candidates, providing a user-friendly experience for managing quizzes.
 
 ## Features
@@ -17,15 +17,16 @@ Quiz On CLI is a command-line interface application that allows users to take qu
 - `datetime`: For handling date and time.
 - `dataclass`: For creating data classes.
 
-- ## Screenshots
+## Screenshots
+
 ### Main Menu
-![Main Menu](visulas/MainMenu.jpg)
+![Main Menu](visuals/MainMenu.jpg)
 
 ### Admin Dashboard
-![Admin](visulas/AdminDash.jpg)
+![Admin](visuals/AdminDash.jpg)
 
 ### Candidate Dashboard
-![Candidate](visulas/CandidateDash.jpg)
+![Candidate](visuals/CandidateDash.jpg)
 
 ## Installation
 
@@ -71,22 +72,15 @@ Quiz On CLI is a command-line interface application that allows users to take qu
 ## Database Initialization
 The database will be automatically initialized when you run the application for the first time. It will create the necessary tables and insert default admin credentials.
 
-## Contributing
-Contributions are welcome! Please follow these steps:
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/YourFeature`).
-3. Make your changes and commit them (`git commit -m 'Add some feature'`).
-4. Push to the branch (`git push origin feature/YourFeature`).
-5. Open a Pull Request.
+<!--
+[View on Eraser![](https://app.eraser.io/workspace/pHxhnZoGxiOtSZp0ke2k/preview?elements=CPituBc6SslSNolUcePKLA&type=embed)](https://app.eraser.io/workspace/pHxhnZoGxiOtSZp0ke2k?elements=CPituBc6SslSNolUcePKLA)
+-->
 
+## Flow Chart
+<p align="center">
+  <img src="https://app.eraser.io/workspace/pHxhnZoGxiOtSZp0ke2k/preview?elements=CPituBc6SslSNolUcePKLA&type=embed">
+</p>
 
 <p align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=39FF14&center=true&width=435&lines=Thank+You+For+Checking+!">
 </p>
-
-```
-[View on Eraser![](https://app.eraser.io/workspace/pHxhnZoGxiOtSZp0ke2k/preview?elements=CPituBc6SslSNolUcePKLA&type=embed)](https://app.eraser.io/workspace/pHxhnZoGxiOtSZp0ke2k?elements=CPituBc6SslSNolUcePKLA)
--->
-
-<a href="https://github.com/Manish-Let-It-Be"><img src="https://app.eraser.io/workspace/pHxhnZoGxiOtSZp0ke2k/preview?elements=CPituBc6SslSNolUcePKLA&type=embed" height='600'/>
-</a>
